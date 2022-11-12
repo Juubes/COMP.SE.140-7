@@ -1,6 +1,6 @@
 services:
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:latest
 
   HTTPSERV:
     image: httpserv
