@@ -6,6 +6,10 @@ const app = express();
 
 const EXCHANGE = "topic_exchange";
 
+if (fs.existsSync("/app/volume/data.txt")) {
+  fs.unlinkSync("/app/volume/data.txt");
+}
+
 // Initial connection
 const connectLoop = setInterval(async () => {
   let res;
@@ -33,25 +37,28 @@ const connectLoop = setInterval(async () => {
   clearInterval(connectLoop);
 }, 1000);
 
+let count = 1;
 /**
  * @param {amqplib.ConsumeMessage} msg
  * @param {amqplib.Channel} channel
  */
 function processMessage(msg, channel) {
-  fs.appendFileSync("/app/data.txt", msg.content.toString());
+  const msgData = msg.content.toString();
 
-  console.log(
-    "Written data: " + msg.content.toString() + " from " + msg.fields.routingKey
-  );
+  const data = `${new Date().toISOString()} ${count++} ${msgData} to ${
+    msg.fields.routingKey
+  }\n`;
+
+  fs.appendFileSync("/app/volume/data.txt", data);
 }
 
 // HTTP route to get the file contents
 app.get("/", (req, res) => {
-  try {
-    res.send(fs.readFileSync("/app/data.txt"));
-  } catch (ex) {
-    res.sendStatus(500);
+  if (!fs.existsSync("/app/volume/data.txt")) {
+    res.send("");
+    return;
   }
+  res.send(fs.readFileSync("/app/volume/data.txt"));
 });
 
 app.listen(8080);
