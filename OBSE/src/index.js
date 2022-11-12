@@ -1,5 +1,8 @@
+import express from "express";
 import fs from "fs";
 import amqplib from "amqplib";
+
+const app = express();
 
 const EXCHANGE = "topic_exchange";
 
@@ -17,13 +20,13 @@ const connectLoop = setInterval(async () => {
   const channel = await res.createChannel();
   await channel.assertExchange(EXCHANGE, "topic");
 
-  // Listen to all queues on exchange
-  const queue = await channel.assertQueue("", { exclusive: true });
-  await channel.bindQueue(queue.queue, EXCHANGE, "#");
+  // Makes sure that the messages are persisted even if services start at different times.
+  const imedQueue = await channel.assertQueue("IMED-in");
+  const obseQueue = await channel.assertQueue("OBSE-in");
+  await channel.bindQueue(imedQueue.queue, EXCHANGE, "compse140.o");
+  await channel.bindQueue(obseQueue.queue, EXCHANGE, "#");
 
-  console.log("Connected.");
-
-  channel.consume(queue.queue, (msg) => processMessage(msg, channel), {
+  channel.consume(obseQueue.queue, (msg) => processMessage(msg, channel), {
     noAck: true,
   });
 
@@ -41,3 +44,14 @@ function processMessage(msg, channel) {
     "Written data: " + msg.content.toString() + " from " + msg.fields.routingKey
   );
 }
+
+// HTTP route to get the file contents
+app.get("/", (req, res) => {
+  try {
+    res.send(fs.readFileSync("/app/data.txt"));
+  } catch (ex) {
+    res.sendStatus(500);
+  }
+});
+
+app.listen(8080);

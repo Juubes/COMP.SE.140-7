@@ -5,7 +5,11 @@ services:
       - 15672:15672
 
   HTTPSERV:
-    image: nginx:latest
+    image: httpserv
+    build:
+      context: ./HTTPSERV
+    ports:
+      - 8080:8080
 
   IMED:
     image: imed
@@ -14,6 +18,7 @@ services:
 
   OBSE:
     image: obse
+    hostname: obse
     build:
       context: ./OBSE
 

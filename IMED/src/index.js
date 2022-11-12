@@ -19,7 +19,9 @@ setTimeout(() => {
 
     let input_queue = await channel.assertQueue("IMED-in");
 
-    channel.bindQueue(input_queue.queue, EXCHANGE, "compse140.o");
+    // Makes sure that the messages are persisted even if IMED has not yet started.
+    const queue = await channel.assertQueue("IMED-in");
+    await channel.bindQueue(queue.queue, EXCHANGE, "compse140.o");
 
     channel.consume(input_queue.queue, (msg) => {
       console.log("Consumed: " + msg.content.toString());
@@ -36,4 +38,4 @@ setTimeout(() => {
 
     clearInterval(connectLoop);
   }, 1000);
-}, 10000);
+}, 15000);

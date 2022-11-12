@@ -1,7 +1,6 @@
 import amqplib from "amqplib";
 
 const EXCHANGE = "topic_exchange";
-const ROUTING_KEY = "compse140.o";
 
 // Initial connection
 const connectLoop = setInterval(async () => {
@@ -17,29 +16,32 @@ const connectLoop = setInterval(async () => {
   const channel = await res.createChannel();
   await channel.assertExchange(EXCHANGE, "topic", { durable: true });
 
-  const queue = await channel.assertQueue("IMED-in");
-  await channel.bindQueue(queue.queue, EXCHANGE, ROUTING_KEY);
+  // Makes sure that the messages are persisted even if services start at different times.
+  const imedQueue = await channel.assertQueue("IMED-in");
+  const obseQueue = await channel.assertQueue("OBSE-in");
+  await channel.bindQueue(imedQueue.queue, EXCHANGE, "compse140.o");
+  await channel.bindQueue(obseQueue.queue, EXCHANGE, "#");
 
   setTimeout(
     () =>
-      channel.publish(EXCHANGE, ROUTING_KEY, Buffer.from("MSG_1"), {
+      channel.publish(EXCHANGE, "compse140.o", Buffer.from("MSG_1"), {
         persistent: true,
       }),
     0
   );
   setTimeout(
     () =>
-      channel.publish(EXCHANGE, ROUTING_KEY, Buffer.from("MSG_2"), {
+      channel.publish(EXCHANGE, "compse140.o", Buffer.from("MSG_2"), {
         persistent: true,
       }),
-    0 * 3000
+    1 * 3000
   );
   setTimeout(
     () =>
-      channel.publish(EXCHANGE, ROUTING_KEY, Buffer.from("MSG_3"), {
+      channel.publish(EXCHANGE, "compse140.o", Buffer.from("MSG_3"), {
         persistent: true,
       }),
-    0 * 3000
+    2 * 3000
   );
 
   clearInterval(connectLoop);
