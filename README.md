@@ -1,4 +1,4 @@
-# AMQP Exercize for COMP.SE.140
+# AMQP Exercise for COMP.SE.140
 
 ## Description
 
