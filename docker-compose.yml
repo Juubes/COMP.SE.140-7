@@ -1,0 +1,23 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+
+  HTTPSERV:
+    image: nginx:latest
+
+  IMED:
+    image: imed
+    build:
+      context: ./IMED
+
+  OBSE:
+    image: obse
+    build:
+      context: ./OBSE
+
+  ORIG:
+    image: orig
+    build:
+      context: ./ORIG
