@@ -1,5 +1,4 @@
-FROM node:latest
-
+FROM node:19
 
 WORKDIR /app
 
@@ -7,8 +6,6 @@ COPY . /app/
 
 RUN mkdir /app/volume
 
-RUN chown -R daemon:daemon /app
-
-USER daemon
+RUN npm ci
 
 ENTRYPOINT node ./src/index.js
