@@ -34,6 +34,7 @@ test:
     - registry.gitlab.com/juubes/comp.se.140/orig
     - registry.gitlab.com/juubes/comp.se.140/obse
     - registry.gitlab.com/juubes/comp.se.140/httpserv
+    - docker:dind
 
   script:
     - curl http://httpserv:8080/
