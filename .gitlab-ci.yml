@@ -24,3 +24,15 @@ build:
     - docker push registry.gitlab.com/juubes/comp.se.140/orig
     - docker push registry.gitlab.com/juubes/comp.se.140/obse
     - docker push registry.gitlab.com/juubes/comp.se.140/httpserv
+
+test:
+  stage: test
+  image: ubuntu:latest
+  services:
+    - registry.gitlab.com/juubes/comp.se.140/imed
+    - registry.gitlab.com/juubes/comp.se.140/orig
+    - registry.gitlab.com/juubes/comp.se.140/obse
+    - registry.gitlab.com/juubes/comp.se.140/httpserv
+
+  script:
+    - curl http://httpserv:8080/
