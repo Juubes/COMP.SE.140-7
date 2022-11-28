@@ -15,4 +15,8 @@ build:
     - docker build -t registry.gitlab.com/comp.se.140-orig ./ORIG
     - docker build -t registry.gitlab.com/comp.se.140-obse ./OBSE
     - docker build -t registry.gitlab.com/comp.se.140-httpserv ./HTTPSERV
-    - docker push
+
+    - docker push registry.gitlab.com/comp.se.140-imed
+    - docker push registry.gitlab.com/comp.se.140-orig
+    - docker push registry.gitlab.com/comp.se.140-obse
+    - docker push registry.gitlab.com/comp.se.140-httpserv
