@@ -33,5 +33,5 @@ test:
     - docker:dind
 
   script:
-    - apt install -y curl
+    - apt-get install -y curl
     - curl http://httpserv:8080/
