@@ -1,6 +1,9 @@
 stages:
   - build
 
+services:
+- docker
+
 build:
   stage: build
   image: docker
