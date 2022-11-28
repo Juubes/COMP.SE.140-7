@@ -1,9 +1,9 @@
-image: ubuntu
 stages:
   - build
 
 build:
   stage: build
+  image: docker
   script:
     - docker build -t comp.se.140-imed /IMED
     - docker build -t comp.se.140-orig /ORIG
