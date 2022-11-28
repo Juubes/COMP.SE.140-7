@@ -1,5 +1,7 @@
 FROM node:19
 
+EXPOSE 8080
+
 WORKDIR /app
 
 COPY . /app/
