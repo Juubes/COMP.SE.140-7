@@ -5,8 +5,8 @@ build:
   stage: build
   image: docker
   script:
-    - docker build -t comp.se.140-imed /IMED
-    - docker build -t comp.se.140-orig /ORIG
-    - docker build -t comp.se.140-obse /OBSE
-    - docker build -t comp.se.140-httpserv /HTTPSERV
+    - docker build -t comp.se.140-imed ./IMED
+    - docker build -t comp.se.140-orig ./ORIG
+    - docker build -t comp.se.140-obse ./OBSE
+    - docker build -t comp.se.140-httpserv ./HTTPSERV
 
