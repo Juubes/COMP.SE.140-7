@@ -28,7 +28,7 @@ build:
 
 test:
   stage: test
-  image: ubuntu:latest
+  image: docker:latest
   services:
     - registry.gitlab.com/juubes/comp.se.140/imed
     - registry.gitlab.com/juubes/comp.se.140/orig
