@@ -35,7 +35,7 @@ test:
   script:
     - apt-get update
     - apt-get install -y curl
-    - curl http://httpserv:8080/
+    - curl httpserv:8080
 
 variables:
   GITLAB_HTTPS: "false"
