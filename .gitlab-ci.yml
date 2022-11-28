@@ -1,6 +1,7 @@
 stages:
-  - build
   - test
+  - build
+
 
 services:
 - docker:dind
