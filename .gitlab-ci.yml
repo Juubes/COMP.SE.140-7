@@ -3,9 +3,9 @@ stages:
   - test
 
 build:
-  image: docker
+  image: docker/compose
   services:
     - docker:dind
 
   script:
-  - docker build ./IMED
+  - docker-compose up
