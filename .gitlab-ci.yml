@@ -3,7 +3,7 @@ stages:
   - test
 
 build:
-  image: docker:latest
+  image: docker:stable
   services:
     - docker
 
