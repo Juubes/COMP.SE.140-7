@@ -5,7 +5,7 @@ stages:
 build:
   image: docker:dind
   services:
-    - docker
+    - docker:dind
 
   script:
   - docker build ./IMED
