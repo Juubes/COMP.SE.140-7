@@ -1,8 +1,12 @@
+
+
 stages:
-  - build
+- build
+
 
 build:
   image: docker/compose
+  stage: build
   services:
     - docker:dind
 
