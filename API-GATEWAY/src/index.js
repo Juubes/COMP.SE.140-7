@@ -3,16 +3,33 @@ import assertAMQPConfiguration from "./rabbitmq.js";
 
 const app = express();
 
-assertAMQPConfiguration();
+const channel = await assertAMQPConfiguration();
+
+// Parse body
+app.use(express.text());
 
 app.get("/messages", (req, res) => {
   res.setHeader("Content-Type", "text/plain");
 });
 
-app.put("/state", (req, res) => {
-  channel.publish("state", "state", Buffer.from("STOP"), {
-    persistent: true,
-  });
+app.put("/state", async (req, res) => {
+  const state = req.body;
+
+  // Validate
+  switch (state) {
+    case "INIT":
+    case "PAUSED":
+    case "RUNNING":
+    case "SHUTDOWN":
+      break;
+    default:
+      res.sendStatus(400);
+      return;
+  }
+
+  await channel.publish("state", "state", Buffer.from(state));
+
+  res.sendStatus(200);
 });
 
 app.get("/state", (req, res) => {
