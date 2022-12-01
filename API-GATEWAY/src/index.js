@@ -15,8 +15,12 @@ export function changeState(state) {
 // Parse body
 app.use(express.text());
 
-app.get("/messages", (req, res) => {
+app.get("/messages", async (req, res) => {
   res.setHeader("Content-Type", "text/plain");
+
+  const result = await fetch("http://obse/");
+  const data = result.text();
+  res.send(data);
 });
 
 app.put("/state", async (req, res) => {

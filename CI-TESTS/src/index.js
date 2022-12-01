@@ -44,11 +44,9 @@ setTimeout(async () => {
 
 setTimeout(async () => {
   console.log("GET /messages");
-  try {
-    const res = await fetch("http://gateway:8083/messages", { method: "GET" });
-    const data = await res.text();
-    console.log(data);
-  } catch (e) {}
+  const res = await fetch("http://gateway:8083/messages", { method: "GET" });
+  const data = await res.text();
+  console.log(data);
 }, 5000);
 
 setTimeout(async () => {
