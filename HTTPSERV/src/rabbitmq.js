@@ -18,13 +18,17 @@ export default function assertAMQPConfiguration() {
     await channel.bindQueue("state-httpserv", "state", "state");
 
     // Get state updates
-    channel.consume(stateQueue.queue, (msg) => processMessage(msg, channel), {
-      noAck: true,
-    });
+    channel.consume(
+      stateQueue.queue,
+      (msg) => processStateUpdate(msg, channel),
+      {
+        noAck: true,
+      }
+    );
 
     clearInterval(connectionLoop);
   }, 1000);
 }
-const processMessage = (msg, channel) => {
-  console.log("TODO: Message received: " + msg.content.toString());
+const processStateUpdate = (msg, channel) => {
+  if (msg.content.toString() == "SHUTDOWN") process.exit(0);
 };

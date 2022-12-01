@@ -37,7 +37,7 @@ export default async function assertAMQPConfiguration() {
       // Get state updates
       channel.consume(
         gatewayQueue.queue,
-        (msg) => processMessage(msg, channel),
+        (msg) => processStateChange(msg, channel),
         {
           noAck: true,
         }
@@ -49,6 +49,6 @@ export default async function assertAMQPConfiguration() {
   });
 }
 
-function processMessage(msg, channel) {
-  console.log("TODO: Message received: " + msg.content);
+function processStateChange(msg, channel) {
+  if (msg.content.toString() == "SHUTDOWN") process.exit(0);
 }

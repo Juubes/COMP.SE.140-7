@@ -35,7 +35,7 @@ export default function assertAMQPConfiguration() {
     // Get state updates
     channel.consume(
       stateQueue.queue,
-      (msg) => processStatusMessage(msg, channel),
+      (msg) => processStateUpdate(msg, channel),
       {
         noAck: true,
       }
@@ -64,6 +64,6 @@ function processMessage(msg, channel) {
  * @param {amqplib.ConsumeMessage} msg
  * @param {amqplib.Channel} channel
  */
-function processStatusMessage(msg, channel) {
-  console.log("TODO: Message received: " + msg.content.toString());
+function processStateUpdate(msg, channel) {
+  if (msg.content.toString() == "SHUTDOWN") process.exit(0);
 }
