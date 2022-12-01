@@ -7,6 +7,9 @@ const channel = await assertAMQPConfiguration();
 
 let globalState = "PAUSED";
 
+/**@type {String[]} */
+let runlog = [];
+
 export function changeState(state) {
   if (state == "INIT") globalState = "RUNNING";
   else globalState = state;
@@ -38,6 +41,8 @@ app.put("/state", async (req, res) => {
       return;
   }
 
+  runlog.push(`${new Date().toISOString()}: ${state}`);
+
   await channel.publish("state", "state", Buffer.from(state));
 
   res.sendStatus(200);
@@ -47,7 +52,7 @@ app.get("/state", (req, res) => {
   res.send(globalState);
 });
 app.get("/run-log", (req, res) => {
-  res.send("Hello run log");
+  res.send(runlog.join("\n"));
 });
 
 // Optional
