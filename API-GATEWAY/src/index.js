@@ -5,6 +5,13 @@ const app = express();
 
 const channel = await assertAMQPConfiguration();
 
+let globalState = "PAUSED";
+
+export function changeState(state) {
+  if (state == "INIT") globalState = "RUNNING";
+  else globalState = state;
+}
+
 // Parse body
 app.use(express.text());
 
@@ -33,7 +40,7 @@ app.put("/state", async (req, res) => {
 });
 
 app.get("/state", (req, res) => {
-  res.send("Hello messages");
+  res.send(globalState);
 });
 app.get("/run-log", (req, res) => {
   res.send("Hello run log");

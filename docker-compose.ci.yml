@@ -9,3 +9,10 @@ services:
     depends_on:
       - rabbitmq
       - HTTPSERV
+      - GATEWAY
+      - IMED
+      - OBSE
+      - ORIG
+
+    networks:
+      - system

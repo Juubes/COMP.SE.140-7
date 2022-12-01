@@ -4,6 +4,8 @@ services:
     image: rabbitmq:3-management
     ports:
       - 15672:15672
+    networks:
+      - system
 
   GATEWAY:
     image: gateway
@@ -11,18 +13,22 @@ services:
       context: ./API-GATEWAY
     ports:
       - 8083:8083
+    networks:
+      - system
 
   HTTPSERV:
     image: httpserv
     build:
       context: ./HTTPSERV
-    ports:
-      - 8080:8080
+    networks:
+      - system
 
   IMED:
     image: imed
     build:
       context: ./IMED
+    networks:
+      - system
 
   OBSE:
     image: obse
@@ -31,8 +37,16 @@ services:
       context: ./OBSE
     volumes:
       - /app/volume
+    networks:
+      - system
 
   ORIG:
     image: orig
     build:
       context: ./ORIG
+    networks:
+      - system
+
+networks:
+  system:
+    internal: true

@@ -1,4 +1,5 @@
 import amqplib from "amqplib";
+import { changeState } from "./index.js";
 
 // Initial connection
 export default async function assertAMQPConfiguration() {
@@ -50,5 +51,6 @@ export default async function assertAMQPConfiguration() {
 }
 
 function processStateChange(msg, channel) {
+  changeState(msg.content.toString());
   if (msg.content.toString() == "SHUTDOWN") process.exit(0);
 }

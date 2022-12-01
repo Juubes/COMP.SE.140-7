@@ -1,12 +1,22 @@
-# stages:
-# - build
+stages:
+- start
+- test
 
-# build:
-#   image: docker/compose
-#   stage: build
-#   services:
-#     - docker:dind
+start:
+  image: docker/compose
+  stage: start
+  services:
+    - docker:dind
 
-#   script:
-#   - docker-compose up
+  script:
+  - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up -d
+
+test:
+  stage: test
+  image: docker/compose
+  services:
+    - docker:dind
+
+  script:
+  - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up ci
 
