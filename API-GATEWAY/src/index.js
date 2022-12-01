@@ -16,10 +16,10 @@ export function changeState(state) {
 app.use(express.text());
 
 app.get("/messages", async (req, res) => {
-  res.setHeader("Content-Type", "text/plain");
-
   const result = await fetch("http://obse/");
-  const data = result.text();
+  const data = await result.text();
+
+  res.setHeader("Content-Type", "text/plain");
   res.send(data);
 });
 

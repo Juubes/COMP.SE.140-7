@@ -13,6 +13,3 @@ services:
       - IMED
       - OBSE
       - ORIG
-
-    networks:
-      - system

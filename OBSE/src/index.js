@@ -17,7 +17,8 @@ app.get("/", (req, res) => {
     res.send("");
     return;
   }
-  res.send(fs.readFileSync("/app/volume/data.txt"));
+  const data = fs.readFileSync("/app/volume/data.txt");
+  res.send(data);
 });
 
-app.listen(8080);
+app.listen(80);
