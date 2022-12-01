@@ -10,4 +10,4 @@ start:
 
   script:
     - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up -d --build
-    - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up CI --build
+    - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up --build CI 
