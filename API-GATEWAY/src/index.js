@@ -7,6 +7,8 @@ const channel = await assertAMQPConfiguration();
 
 let globalState = "PAUSED";
 
+const startTime = new Date();
+
 /**@type {String[]} */
 let runlog = [];
 
@@ -57,12 +59,15 @@ app.get("/run-log", (req, res) => {
 
 // Optional
 app.get("/node-statistics", (req, res) => {
-  res.send("Hello node stats");
+  res.send({
+    stateChanges: runlog.length,
+    uptime: Date.now() - startTime,
+  });
 });
 
 // Optional
 app.get("/queue-statistics", (req, res) => {
-  res.send("Hello queue stats");
+  res.send({ error: "queue-statistics not implemented" });
 });
 
 app.listen(8083);

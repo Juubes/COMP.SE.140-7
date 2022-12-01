@@ -2,6 +2,9 @@ import amqplib from "amqplib";
 import { changeState } from "./index.js";
 
 // Initial connection
+/**
+ * @returns {Promise<amqplib.Channel>}
+ */
 export default async function assertAMQPConfiguration() {
   return new Promise(async (resolve, reject) => {
     const retry = async () => {

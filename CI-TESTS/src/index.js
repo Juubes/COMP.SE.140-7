@@ -46,6 +46,10 @@ setTimeout(async () => {
   console.log("GET /messages");
   const res = await fetch("http://gateway:8083/messages", { method: "GET" });
   const data = await res.text();
+  if (!data.match(/\n/)) {
+    console.log("No data found");
+    process.exit(1);
+  }
   console.log(data);
 }, 5000);
 
