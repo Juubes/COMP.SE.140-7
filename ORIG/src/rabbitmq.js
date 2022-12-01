@@ -1,39 +1,46 @@
 import amqplib from "amqplib";
+import { updateState } from "./index.js";
 
 const EXCHANGE = "topic_exchange";
 
+/**@return {Promise<amqplib.Channel>} */
 export default function assertAMQPConfiguration() {
-  const connectionLoop = setInterval(async () => {
-    let res;
-    try {
-      res = await amqplib.connect("amqp://rabbitmq/");
-    } catch (ex) {
-      // Cannot connect, retry
-      return;
-    }
+  return new Promise(async (resolve, reject) => {
+    const retry = async () => {
+      let res;
+      try {
+        res = await amqplib.connect("amqp://rabbitmq/");
+        console.log("Connection!");
+      } catch (ex) {
+        // Cannot connect, retry
+        setTimeout(retry, 1000);
+        return;
+      }
 
-    const channel = await res.createChannel();
-    await channel.assertExchange("state", "fanout");
-    await channel.assertExchange(EXCHANGE, "topic", { durable: true });
+      const channel = await res.createChannel();
+      await channel.assertExchange("state", "fanout");
+      await channel.assertExchange(EXCHANGE, "topic", { durable: true });
 
-    // Makes sure that the messages are persisted even if services start at different times.
-    const imedQueue = await channel.assertQueue("IMED-in");
-    const obseQueue = await channel.assertQueue("OBSE-in");
-    await channel.bindQueue(imedQueue.queue, EXCHANGE, "compse140.o");
-    await channel.bindQueue(obseQueue.queue, EXCHANGE, "#");
+      // Makes sure that the messages are persisted even if services start at different times.
+      const imedQueue = await channel.assertQueue("IMED-in");
+      const obseQueue = await channel.assertQueue("OBSE-in");
+      await channel.bindQueue(imedQueue.queue, EXCHANGE, "compse140.o");
+      await channel.bindQueue(obseQueue.queue, EXCHANGE, "#");
 
-    // Make sure all queues for state are initialized
-    const stateQueue = await channel.assertQueue("state-orig");
-    await channel.bindQueue("state-orig", "state", "state");
+      // Make sure all queues for state are initialized
+      const stateQueue = await channel.assertQueue("state-orig");
+      await channel.bindQueue("state-orig", "state", "state");
 
-    // Get state updates
-    channel.consume(stateQueue.queue, (msg) => processMessage(msg, channel), {
-      noAck: true,
-    });
-
-    clearInterval(connectionLoop);
-  }, 1000);
+      // Get state updates
+      channel.consume(stateQueue.queue, (msg) => processMessage(msg, channel), {
+        noAck: true,
+      });
+      resolve(channel);
+    };
+    retry();
+  });
 }
+
 const processMessage = (msg, channel) => {
-  console.log("TODO: Message received: " + msg.content.toString());
+  updateState(msg.content.toString());
 };
