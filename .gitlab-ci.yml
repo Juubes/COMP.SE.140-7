@@ -1,6 +1,6 @@
 stages:
-- start
-- test
+  - start
+  - test
 
 start:
   image: docker/compose
@@ -9,14 +9,5 @@ start:
     - docker:dind
 
   script:
-  - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up -d
-
-test:
-  stage: test
-  image: docker/compose
-  services:
-    - docker:dind
-
-  script:
-  - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up ci
-
+    - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up -d --build
+    - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up CI --build
