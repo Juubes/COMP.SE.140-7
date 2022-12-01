@@ -51,10 +51,13 @@ setTimeout(async () => {
 
 setTimeout(async () => {
   console.log("PUT /state < SHUTDOWN");
-  await fetch("http://gateway:8083/state", {
-    method: "PUT",
-    body: "SHUTDOWN",
-  });
+  try {
+    // This can fail if the gateway stops synchronously
+    await fetch("http://gateway:8083/state", {
+      method: "PUT",
+      body: "SHUTDOWN",
+    });
+  } catch (e) {}
 }, 20000);
 
 setTimeout(async () => {
