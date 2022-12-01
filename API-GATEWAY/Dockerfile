@@ -1,14 +1,11 @@
 FROM node:19
 
-EXPOSE 8080
+EXPOSE 8083
 
 WORKDIR /app
 
-COPY ./package-lock.json ./package.json /app/
-
-RUN npm ci
-
 COPY . /app/
 
+RUN npm ci
 
 ENTRYPOINT node ./src/index.js

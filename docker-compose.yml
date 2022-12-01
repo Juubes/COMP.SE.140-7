@@ -1,7 +1,16 @@
 version: "3.1"
 services:
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+
+  GATEWAY:
+    image: gateway
+    build:
+      context: ./API-GATEWAY
+    ports:
+      - 8083:8083
 
   HTTPSERV:
     image: httpserv

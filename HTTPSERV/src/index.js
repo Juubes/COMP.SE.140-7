@@ -1,6 +1,9 @@
 import express from "express";
+import assertAMQPConfiguration from "./rabbitmq.js";
 
 const app = express();
+
+assertAMQPConfiguration();
 
 // Parse body text
 app.use(express.text());
