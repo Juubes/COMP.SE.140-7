@@ -9,4 +9,4 @@ start:
 
   script:
     - docker-compose -f docker-compose.yml up -d --build
-    - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up --build CI 
+    - docker-compose -f docker-compose.ci.yml -f docker-compose.yml up --build --exit-code-from=CI CI
