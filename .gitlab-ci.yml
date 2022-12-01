@@ -1,12 +1,12 @@
-stages:
-- build
+# stages:
+# - build
 
-build:
-  image: docker/compose
-  stage: build
-  services:
-    - docker:dind
+# build:
+#   image: docker/compose
+#   stage: build
+#   services:
+#     - docker:dind
 
-  script:
-  - docker-compose up
+#   script:
+#   - docker-compose up
 

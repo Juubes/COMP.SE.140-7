@@ -10,7 +10,9 @@ app.get("/messages", (req, res) => {
 });
 
 app.put("/state", (req, res) => {
-  res.sendStatus(500);
+  channel.publish("state", "state", Buffer.from("STOP"), {
+    persistent: true,
+  });
 });
 
 app.get("/state", (req, res) => {

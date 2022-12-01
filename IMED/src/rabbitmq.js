@@ -40,13 +40,30 @@ export default function assertAMQPConfiguration() {
 
     channel.consume(
       stateQueue.queue,
-      (msg) => {
-        // TODO:
-        console.log("TODO: Message received: " + msg.content.toString());
-      },
+      (msg) => updateState(msg.content.toString()),
       { noAck: true }
     );
 
     clearInterval(connectionLoop);
   }, 1000);
+}
+
+/**
+ * @param {String} state
+ */
+export async function updateState(state) {
+  switch (state) {
+    case "INIT":
+      console.log("TODO: INIT");
+      break;
+    case "PAUSED":
+      console.log("TODO: INIT");
+      break;
+    case "RUNNING":
+      console.log("TODO: INIT");
+      break;
+    case "SHUTDOWN":
+      process.exit(0);
+      break;
+  }
 }

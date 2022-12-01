@@ -10,7 +10,6 @@ export default function assertAMQPConfiguration() {
       let res;
       try {
         res = await amqplib.connect("amqp://rabbitmq/");
-        console.log("Connection!");
       } catch (ex) {
         // Cannot connect, retry
         setTimeout(retry, 1000);

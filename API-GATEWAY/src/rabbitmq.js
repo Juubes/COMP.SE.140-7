@@ -38,11 +38,6 @@ export default function assertAMQPConfiguration() {
       noAck: true,
     });
 
-    channel.publish("state", "state", Buffer.from("STOP"), {
-      persistent: true,
-    });
-    console.log("Sending!")
-
     clearInterval(connectionLoop);
   }, 1000);
 }
