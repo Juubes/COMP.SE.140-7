@@ -1,8 +1,11 @@
+const MAX_CONNECTION_TRIES = 20;
 async function assertConnection() {
+  let count = 0;
   return new Promise((resolve, reject) => {
     async function retry() {
+      if (count > MAX_CONNECTION_TRIES) process.exit(1);
       try {
-        const res = await fetch("http://gateway:8083/state");
+        await fetch("http://gateway:8083/state");
       } catch (e) {
         return setTimeout(() => {
           console.log("Retrying connection");
@@ -12,6 +15,7 @@ async function assertConnection() {
 
       resolve();
     }
+    count++;
     retry();
   });
 }
@@ -20,7 +24,6 @@ await assertConnection();
 
 // Init
 console.log("PUT /state < INIT");
-
 await fetch("http://gateway:8083/state", { method: "PUT", body: "INIT" });
 
 setTimeout(async () => {
@@ -55,7 +58,7 @@ setTimeout(async () => {
 }, 20000);
 
 setTimeout(async () => {
-  console.log("GET /state < ");
+  console.log("GET /state fails");
   try {
     // Fails if shutdown worked
     await fetch("http://gateway:8083/state", { method: "GET" });
