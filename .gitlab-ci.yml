@@ -1,6 +1,5 @@
 stages:
   - start
-  - test
 
 start:
   image: docker/compose

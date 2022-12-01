@@ -19,31 +19,47 @@ async function assertConnection() {
 await assertConnection();
 
 // Init
+console.log("PUT /state < INIT");
+
 await fetch("http://gateway:8083/state", { method: "PUT", body: "INIT" });
 
 setTimeout(async () => {
+  console.log("GET /state == RUNNING");
+
   const res = await fetch("http://gateway:8083/state", { method: "GET" });
   const data = await res.text();
   if (data != "RUNNING") process.exit(1);
 }, 1000);
 
 setTimeout(async () => {
+  console.log("GET /state == RUNNING");
+
   const res = await fetch("http://gateway:8083/state", { method: "GET" });
   const data = await res.text();
   if (data != "RUNNING") process.exit(1);
+}, 1000);
+
+setTimeout(async () => {
+  console.log("GET /messages");
+  const res = await fetch("http://gateway:8083/messages", { method: "GET" });
+  const data = await res.text();
+  console.log(data);
 }, 5000);
 
 setTimeout(async () => {
-  const res = await fetch("http://gateway:8083/state", {
+  console.log("PUT /state < SHUTDOWN");
+  await fetch("http://gateway:8083/state", {
     method: "PUT",
     body: "SHUTDOWN",
   });
 }, 20000);
 
 setTimeout(async () => {
+  console.log("GET /state < ");
   try {
-    const res = await fetch("http://gateway:8083/state", { method: "GET" });
-    const data = res.text();
-    console.log(data);
-  } catch (e) {}
+    // Fails if shutdown worked
+    await fetch("http://gateway:8083/state", { method: "GET" });
+  } catch (e) {
+    process.exitCode = 0;
+  }
 }, 21000);
