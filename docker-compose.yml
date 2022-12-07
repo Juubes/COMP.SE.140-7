@@ -27,8 +27,6 @@ services:
     hostname: obse
     build:
       context: ./OBSE
-    ports:
-      - 8080:80
 
   ORIG:
     image: orig
